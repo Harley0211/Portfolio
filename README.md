@@ -1,16 +1,51 @@
-# React + Vite
+# Harley Dave Valencia — Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Personal portfolio for a Software QA Engineer. Dark "test run" theme: the hero is an animated Playwright runner where every check passes, over an interactive grid of "test nodes" that react to the cursor.
 
-Currently, two official plugins are available:
+Built with **React 18 + Vite** (JavaScript). No UI libraries; all styling is one CSS file.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Run it locally
 
-## React Compiler
+Needs Node.js 18+.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+npm install
+npm run dev        # http://localhost:3000 with hot reload
+npm run build      # production build into dist/
+npm run preview    # serve the built dist/ at http://localhost:3000
+```
 
-## Expanding the ESLint configuration
+## Project structure
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```
+index.html                 Page <head> (title, meta, fonts, favicon) + #root
+src/main.jsx               Entry: mounts <App/> and imports styles.css
+src/App.jsx                Page layout: which sections appear, in order
+src/data.js                ALL list content: EDIT THIS for projects, jobs, skills, case studies, runner lines
+src/styles.css             All styling, colours and animations (design tokens in :root)
+src/usePageEffects.js      Scroll reveals, nav highlight, timeline fill, hero spotlight, card tilt
+src/components/            One file per section (Hero, Runner, Work, Studio, Automation, …) + Backdrop canvas
+public/assets/             Résumé PDF and project media, served as-is at assets/…
+```
+
+## Common edits
+
+| To change… | Edit |
+| --- | --- |
+| Projects, experience, skills, marquee words, terminal checks, case studies | `src/data.js` |
+| AI QA Studio live demo link (changes when the tunnel restarts) | `studio.live` in `src/data.js` |
+| Headline, intro | `src/components/Hero.jsx` |
+| Contact text, email | `src/components/Contact.jsx` |
+| Accent colour | `--acc` in `src/styles.css` (also the `rgba(124,240,182,…)` glows and `Backdrop.jsx`) |
+| Résumé | Replace the PDF in `public/assets/` and update `RESUME` in `Hero.jsx` and `Contact.jsx` |
+
+## Deploy
+
+**GitHub Pages:** push to `main`. `.github/workflows/deploy.yml` builds and publishes automatically.
+One-time setup: repo → Settings → Pages → Source: **GitHub Actions**.
+
+**Netlify:** connect the repo; `netlify.toml` already sets build command `npm run build` and publish dir `dist`.
+
+## Accessibility & motion
+
+Respects `prefers-reduced-motion` (animations off, background drawn as a still grid), keyboard focus styles on every control, and stacks to a single column on phones.
