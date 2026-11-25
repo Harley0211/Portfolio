@@ -5,7 +5,7 @@ PICTURE: a live Playwright runner that types its checks and turns green.
 COLOUR and TYPE: night ink #0d1014, pass-mint #7cf0b6, Inter Tight + JetBrains Mono.
 LAYOUT: hero split (copy / runner), marquee, work cards, timeline, toolkit, contact panel.
 */
-:root{color-scheme:dark;--bg:#0d1014;--panel:#151a21;--line:#232b35;--soft:#1c232c;--ink:#e8edf2;--mute:#9aa6b2;--dim:#6b7785;--acc:#7cf0b6;--mono:'JetBrains Mono',ui-monospace,monospace}
+:root{color-scheme:dark;--bg:#0d1014;--panel:#151a21;--line:#232b35;--soft:#1c232c;--ink:#e8edf2;--mute:#9aa6b2;--dim:#7d8996;--acc:#7cf0b6;--mono:'JetBrains Mono',ui-monospace,monospace}
 *{box-sizing:border-box;min-width:0}
 html{scroll-behavior:smooth;scroll-padding-top:84px}
 body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 'Inter Tight',system-ui,sans-serif;overflow-x:clip;-webkit-font-smoothing:antialiased}
@@ -52,7 +52,7 @@ h1 .w{display:inline-block;opacity:0;transform:translateY(.4em);animation:rise .
 .ln b{width:14px;font-weight:400;color:var(--dim)}
 .ln.ok b{color:var(--acc)}
 .ln span{color:#c9d2db}
-.ln em{margin-left:auto;font-style:normal;color:#55606c;white-space:nowrap}
+.ln em{margin-left:auto;font-style:normal;color:var(--dim);white-space:nowrap}
 .prog{margin-top:20px;height:6px;background:var(--line);border-radius:6px;overflow:hidden}
 .prog div{height:100%;width:0;background:var(--acc);transition:width .4s}
 .sum{margin:14px 0 0;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--acc)}
@@ -166,7 +166,12 @@ h1 .w{display:inline-block;opacity:0;transform:translateY(.4em);animation:rise .
 .facts{display:flex;flex-direction:column;gap:12px;position:relative;z-index:1}
 .facts div{display:flex;justify-content:space-between;gap:16px;border-bottom:1px solid var(--line);padding:10px 0;font-size:15px}
 .facts dt{color:var(--dim)}.facts dd{margin:0;text-align:right}
-footer{padding:56px 0 48px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font:13px var(--mono);color:#55606c}
+footer{padding:56px 0 48px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font:13px var(--mono);color:var(--dim)}
+footer a{color:inherit;text-underline-offset:3px}
+footer a:hover{color:var(--ink)}
+.skip{position:fixed;left:16px;top:12px;z-index:50;background:var(--acc);color:#0d1014;font:600 15px var(--mono);padding:12px 18px;border-radius:10px;text-decoration:none;transform:translateY(-160%);transition:transform .2s}
+.skip:focus-visible,.skip:focus{transform:none;outline:2px solid var(--ink);outline-offset:2px}
+main:focus{outline:none}
 /* reveal */
 .rv{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
 .rv.in{opacity:1;transform:none}
@@ -179,4 +184,4 @@ footer{padding:56px 0 48px;display:flex;flex-wrap:wrap;justify-content:space-bet
 @keyframes breathe{50%{transform:scale(1.15)}}
 @media(max-width:900px){.hero .wrap,.cta,.studio,.studio.two{grid-template-columns:minmax(0,1fr)}.job{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:600px){.links a:not(.btn){display:none}.log{font-size:12.5px;padding:18px}.ln em{display:none}body{font-size:16px}.brief{padding:22px}.flow{padding:20px 18px 6px;font-size:13px}.flow-note{padding:0 18px 20px}.stat b{font-size:34px}.lst{padding:16px 18px 18px;font-size:12.5px;max-height:400px}.case .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.case .stat{padding:16px 18px}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}h1 .w,.runner,.rv,.ln{opacity:1!important;transform:none!important}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}h1 .w,.runner,.rv,.ln{opacity:1!important;transform:none!important}}

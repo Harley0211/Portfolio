@@ -15,6 +15,21 @@ npm run build      # production build into dist/
 npm run preview    # serve the built dist/ at http://localhost:3000
 ```
 
+## Tests
+
+The site has its own Playwright regression suite (`tests/portfolio.spec.js`), run at desktop and 375px mobile against the production build:
+no console errors or failed requests, the hero run ends on "6 passed · 0 failed", every section/card/image/video loads,
+the résumé is a real PDF, links are safe and point at real sections, keyboard skip link, no sideways scroll,
+reduced-motion support, and an **axe** WCAG 2 AA audit.
+
+```bash
+npx playwright install chromium   # once
+npm run build && npm test         # PW_CHANNEL=msedge npm test uses installed Edge instead
+npm run test:report               # open the HTML report
+```
+
+CI runs the suite on every push; GitHub Pages only deploys if it passes.
+
 ## Project structure
 
 ```
@@ -41,7 +56,7 @@ public/assets/             Résumé PDF and project media, served as-is at asset
 
 ## Deploy
 
-**GitHub Pages:** push to `main`. `.github/workflows/deploy.yml` builds and publishes automatically.
+**GitHub Pages:** push to `main`. `.github/workflows/deploy.yml` builds, tests and publishes automatically.
 One-time setup: repo → Settings → Pages → Source: **GitHub Actions**.
 
 **Netlify:** connect the repo; `netlify.toml` already sets build command `npm run build` and publish dir `dist`.

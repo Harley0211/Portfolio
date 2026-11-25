@@ -1,4 +1,5 @@
-# Builds the React (Vite) site and publishes it to GitHub Pages on every push to main.
+# Builds the React (Vite) site, runs the Playwright + axe suite against the build,
+# and publishes to GitHub Pages only if every test passes.
 # One-time setup: repo → Settings → Pages → Build and deployment → Source: "GitHub Actions".
 name: Deploy to GitHub Pages
 
@@ -27,6 +28,15 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - name: Playwright + axe tests (desktop + 375px mobile)
+        run: npm test
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report
+          retention-days: 14
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

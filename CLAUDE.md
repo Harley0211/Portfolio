@@ -4,7 +4,7 @@ Personal portfolio for Harley Dave Valencia, Software QA Engineer (General Santo
 Goal: land a remote QA role — the site must look senior, load fast, and never break.
 
 ## Stack
-- **React 18 + Vite (JavaScript, JSX)**, converted from the original static site on 2026-11-25 at Harley's request. Only deps: react, react-dom, vite, @vitejs/plugin-react. Don't add UI/animation libraries unless asked.
+- **React 18 + Vite (JavaScript, JSX)**, converted from the original static site on 2026-11-25 at Harley's request. Only deps: react, react-dom, vite, @vitejs/plugin-react (+ dev-only test deps @playwright/test, @axe-core/playwright). Don't add UI/animation libraries unless asked.
 - One plain CSS file (no CSS-in-JS, no Tailwind). Markup/class names mirror the original static site so the CSS applies unchanged.
 - Fonts from Google Fonts (Inter Tight, JetBrains Mono). No other external requests.
 - `npm run dev` (port 3000), `npm run build` → `dist/`, `npm run preview`.
@@ -34,5 +34,6 @@ Goal: land a remote QA role — the site must look senior, load fast, and never 
 - Render data as JSX text (React escapes it). Never use `dangerouslySetInnerHTML` for content.
 
 ## Before finishing any change
-- `npm run build` must succeed. Check `npm run dev` at desktop + ~375px mobile width.
+- `npm run build` must succeed, then `npm test` (Playwright + axe, `tests/portfolio.spec.js`; on this PC set `PW_CHANNEL=msedge`) must pass. CI runs the same suite and blocks the Pages deploy on failure. Update the spec when you add sections/cards.
+- Check `npm run dev` at desktop + ~375px mobile width.
 - Check the console has no errors and the test-runner still ends on "6 passed · 0 failed".

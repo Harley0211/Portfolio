@@ -24,17 +24,17 @@ export default function Runner() {
   const sum = passed === 0 ? 'running…' : passed === n ? `${n} passed · 0 failed · ready to hire` : `${passed}/${n} passed`;
 
   return (
-    <div className="runner" role="img" aria-label="A Playwright test run where all six checks for Harley's QA skills pass">
-      <div className="bar"><Dots /><span>~/harley $ npx playwright test harley.spec.js</span></div>
+    <div className="runner" role="group" aria-label="A Playwright test run where all six checks for Harley's QA skills pass">
+      <div className="bar" aria-hidden="true"><Dots /><span>~/harley $ npx playwright test harley.spec.js</span></div>
       <div className="log">
-        <div id="lines" key={run}>
+        <div id="lines" key={run} aria-hidden="true">
           {checks.map(([t, ms], i) => (
             <div key={i} className={'ln' + (state[i] >= 1 ? ' show' : '') + (state[i] === 2 ? ' ok' : '')}>
               <b>{state[i] === 2 ? '✓' : '◌'}</b><span>{t}</span><em>{ms}ms</em>
             </div>
           ))}
         </div>
-        <div className="prog"><div id="prog" style={{ width: passed ? (passed / n * 100) + '%' : '0' }}></div></div>
+        <div className="prog" aria-hidden="true"><div id="prog" style={{ width: passed ? (passed / n * 100) + '%' : '0' }}></div></div>
         <div className="sum"><span id="sum">{sum}</span><button className="rerun" id="rerun" type="button" onClick={() => { setState(checks.map(() => 0)); setPassed(0); setRun(r => r + 1); }}>↻ re-run</button></div>
       </div>
       <div className="scan"></div>

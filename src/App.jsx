@@ -14,11 +14,12 @@ export default function App() {
   usePageEffects();
   return (
     <>
+      <a className="skip" href="#main">Skip to content</a>
       <Backdrop />
       <Nav />
-      <Hero />
-      <Marquee />
-      <main>
+      <main id="main" tabIndex={-1}>
+        <Hero />
+        <Marquee />
         <Work />
         <Studio />
         <Automation />

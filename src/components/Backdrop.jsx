@@ -16,34 +16,50 @@ export default function Backdrop() {
     let w = 0, h = 0, raf = 0;
     const m = { x: -1e4, y: -1e4, tx: -1e4, ty: -1e4 };
 
+    // Nodes are batched into one path per alpha level (a handful of fills per frame
+    // instead of ~700), which keeps the loop cheap on machines without GPU canvas.
+    const LEVELS = 12, buckets = Array.from({ length: LEVELS }, () => []);
     const draw = time => {
       m.x += (m.tx - m.x) * 0.14; m.y += (m.ty - m.y) * 0.14;
       ctx.clearRect(0, 0, w, h);
       const off = (scrollY * 0.12) % GAP;
       const scan = reduceMotion ? -999 : ((time / 9000) % 1) * (h + 240) - 120;
       const near = [];
+      for (const b of buckets) b.length = 0;
+      ctx.beginPath(); // base nodes (dim, fixed size) → one fill
       for (let gy = -GAP; gy < h + GAP; gy += GAP) {
+        const wy = reduceMotion ? 0 : time / 2600 + gy * 0.021, sx = reduceMotion ? 0 : Math.sin(wy) * 3;
         for (let gx = GAP / 2; gx < w + GAP; gx += GAP) {
-          let x = gx + (reduceMotion ? 0 : Math.sin(time / 2600 + gy * 0.021) * 3);
-          let y = gy - off + (reduceMotion ? 0 : Math.cos(time / 3100 + gx * 0.017) * 3);
-          let a = 0.13, s = 1.7;
+          const x = gx + sx;
+          const y = gy - off + (reduceMotion ? 0 : Math.cos(time / 3100 + gx * 0.017) * 3);
           const ds = Math.abs(y - scan);
-          if (ds < 70) a += (1 - ds / 70) * 0.22;
           const dx = x - m.x, dy = y - m.y, d = Math.hypot(dx, dy);
           if (d < R && d > 0.01) {
             const k = 1 - d / R;
-            x += dx / d * k * 12; y += dy / d * k * 12;
-            a += k * 0.6; s += k * 1.8;
-            near.push(x, y, k);
+            near.push(x + dx / d * k * 12, y + dy / d * k * 12, k, ds < 70 ? (1 - ds / 70) * 0.22 : 0);
+          } else if (ds < 70) {
+            buckets[Math.min(LEVELS - 1, Math.floor((1 - ds / 70) * LEVELS))].push(x, y);
+          } else {
+            ctx.rect(x - 0.85, y - 0.85, 1.7, 1.7);
           }
-          ctx.fillStyle = `rgba(124,240,182,${a.toFixed(3)})`;
-          ctx.fillRect(x - s / 2, y - s / 2, s, s);
         }
       }
+      ctx.fillStyle = 'rgba(124,240,182,.13)'; ctx.fill();
+      // scan-line band: brighter nodes, grouped by brightness level
+      buckets.forEach((b, i) => {
+        if (!b.length) return;
+        ctx.beginPath();
+        for (let j = 0; j < b.length; j += 2) ctx.rect(b[j] - 0.85, b[j + 1] - 0.85, 1.7, 1.7);
+        ctx.fillStyle = `rgba(124,240,182,${(0.13 + (i + 0.5) / LEVELS * 0.22).toFixed(3)})`; ctx.fill();
+      });
+      // nodes near the pointer (a few dozen): individual size/alpha + link line
       ctx.lineWidth = 1;
-      for (let i = 0; i < near.length; i += 3) {
-        ctx.strokeStyle = `rgba(124,240,182,${(near[i + 2] * 0.22).toFixed(3)})`;
-        ctx.beginPath(); ctx.moveTo(m.x, m.y); ctx.lineTo(near[i], near[i + 1]); ctx.stroke();
+      for (let i = 0; i < near.length; i += 4) {
+        const x = near[i], y = near[i + 1], k = near[i + 2], s = 1.7 + k * 1.8;
+        ctx.fillStyle = `rgba(124,240,182,${(0.13 + near[i + 3] + k * 0.6).toFixed(3)})`;
+        ctx.fillRect(x - s / 2, y - s / 2, s, s);
+        ctx.strokeStyle = `rgba(124,240,182,${(k * 0.22).toFixed(3)})`;
+        ctx.beginPath(); ctx.moveTo(m.x, m.y); ctx.lineTo(x, y); ctx.stroke();
       }
     };
 

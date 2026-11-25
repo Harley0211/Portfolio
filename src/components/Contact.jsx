@@ -37,7 +37,7 @@ export default function Contact() {
             <div><dt>Collaboration</dt><dd>Async, Agile/Scrum</dd></div>
           </dl>
         </div>
-        <footer><span>© 2026 Harley Dave Valencia</span><span>built &amp; tested by me <span className="acc">✓</span></span></footer>
+        <footer><span>© 2026 Harley Dave Valencia</span><span>built by me · <a href="https://github.com/Harley0211/Portfolio/actions" target="_blank" rel="noopener">tested by Playwright + axe on every deploy</a> <span className="acc">✓</span></span></footer>
       </div>
     </section>
   );
