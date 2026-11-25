@@ -12,10 +12,10 @@ export default function Studio() {
         <div className="studio">
           <figure className="frame rv">
             <div className="bar"><Dots /><span>~/ai-qa-studio $ play demo.mp4</span></div>
-            <video controls muted playsInline preload="none" poster={dir + 'ai-qa-studio-poster.jpg'} width="1280" height="720" aria-label="AI QA Studio demo video, 2 minutes 44 seconds, no sound, with on-screen captions">
-              <source src={dir + 'ai-qa-studio-demo-720p.mp4'} type="video/mp4" />
+            <video controls playsInline preload="none" poster={dir + 'ai-qa-studio-narrated-poster.jpg'} width="1920" height="1080" aria-label="AI QA Studio demo video, 2 minutes 44 seconds, narrated, with on-screen captions">
+              <source src={dir + 'ai-qa-studio-demo-narrated.mp4'} type="video/mp4" />
             </video>
-            <figcaption>Demo · 2:44 · no sound, captions on screen · made-up demo data only</figcaption>
+            <figcaption>Demo · 2:44 · narrated, captions on screen · made-up demo data only</figcaption>
           </figure>
 
           <div className="brief rv">
